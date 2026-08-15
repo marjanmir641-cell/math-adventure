@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#6fcf97">
+<title>راز چشمه‌ی ریاضی</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Comic Sans MS","Trebuchet MS","Arial Rounded MT Bold","Vazirmatn",Tahoma,Arial,sans-serif}
+body{background:linear-gradient(#bde0fe,#e8f5e9);color:#173b2b;overflow-x:hidden}
+.screen{min-height:100vh;display:none;padding:14px}.screen.active{display:flex;align-items:center;justify-content:center}
+.card{width:min(980px,100%);background:#fffdf5;border:4px solid #6a994e;border-radius:28px;box-shadow:0 12px 30px #28594344;padding:22px;text-align:center}
+h1{color:#386641;font-size:clamp(28px,7vw,54px);margin:5px}.subtitle{color:#4f8f5c;font-size:19px;font-weight:bold}
+.forest-title{font-size:72px}.teacher{background:#e9f5db;border-radius:18px;padding:12px;margin-top:16px}
+input{width:min(500px,95%);padding:15px;border:3px solid #95b46a;border-radius:18px;text-align:center;font-size:20px}
+.btn{padding:12px 20px;margin:6px;border-radius:17px;color:white;font-weight:bold;box-shadow:0 4px #999;cursor:pointer;border:0}
+.green{background:#52b788;box-shadow:0 4px #31865e}.blue{background:#4ea8de;box-shadow:0 4px #277da1}.red{background:#e76f51;box-shadow:0 4px #bd4d33}
+.lesson{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0}.lesson div{background:#eaf7ee;border-radius:18px;padding:13px}
+.hidden{display:none!important}
+#game{padding:7px}.gamecard{width:min(1050px,100%);background:#f7fff0;border:4px solid #6a994e;border-radius:25px;padding:9px;box-shadow:0 8px 20px #28594333;text-align:center}
+.hud{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}.pill{background:#fff;padding:8px 12px;border-radius:15px;font-weight:bold;border:2px solid #95b46a}
+.progress{height:11px;background:#d8e2dc;border-radius:20px;overflow:hidden;margin:8px 0}.bar{height:100%;background:#52b788;width:0;transition:.3s}
+.scene{height:250px;border-radius:23px;position:relative;overflow:hidden;background:linear-gradient(#91d9f2 0 50%,#75b84b 50% 100%);border:3px solid #6a994e}
+.scene .mountains{position:absolute;bottom:67px;left:0;right:0;font-size:70px;line-height:1;white-space:nowrap}
+.scene .clouds{position:absolute;top:12px;left:0;right:0;font-size:35px;display:flex;justify-content:space-around}
+.scene .path{position:absolute;bottom:0;left:34%;width:32%;height:54%;background:#d7b98e;clip-path:polygon(35% 0,65% 0,100% 100%,0 100%)}
+.character{position:absolute;bottom:35px;right:50%;transform:translateX(50%);font-size:70px;z-index:3;transition:.35s}
+.obstacle{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);font-size:65px;z-index:2;filter:drop-shadow(0 5px 3px #0002)}
+.stage-title{position:absolute;top:8px;left:0;right:0;background:#ffffffcc;padding:7px;font-weight:bold;z-index:4}
+.question{background:#fff;border-radius:20px;padding:13px;margin:9px auto;border:3px dashed #74c69d;max-width:850px}
+.q{font-size:clamp(20px,5vw,31px);font-weight:bold;margin:8px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-width:700px;margin:auto}
+@media(max-width:560px){.answers{grid-template-columns:1fr}.scene{height:215px}.character{font-size:58px}.obstacle{font-size:52px}.mountains{font-size:54px!important}.pill{font-size:13px}.btn{padding:11px 15px}}
+.ans{background:#fff3bf;border:3px solid #e9c46a;padding:13px;border-radius:15px;font-size:19px;font-weight:bold;cursor:pointer}.ans:disabled{opacity:.55}
+.feedback{min-height:34px;font-size:17px;font-weight:bold;padding:4px}
+.balloons{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
+.balloon{position:absolute;pointer-events:auto;width:52px;height:65px;border-radius:50% 50% 48% 48%;display:flex;align-items:center;justify-content:center;font-size:0;cursor:pointer;animation:float 3.5s ease-in-out forwards;filter:drop-shadow(0 4px 4px #0002)}
+.balloon:after{content:"";position:absolute;bottom:-24px;width:2px;height:25px;background:#777}
+@keyframes float{from{transform:translateY(100vh) rotate(-8deg);opacity:0}15%{opacity:1}to{transform:translateY(-20vh) rotate(12deg);opacity:1}}
+.pop{animation:pop .18s forwards!important}@keyframes pop{to{transform:scale(1.8);opacity:0}}
+.spark{position:absolute;pointer-events:none;font-size:28px;animation:spark 1s forwards}@keyframes spark{to{transform:translateY(-80px) scale(.4);opacity:0}}
+.modal{position:fixed;inset:0;background:#173b2bcc;display:flex;align-items:center;justify-content:center;padding:15px;z-index:30}.modal .card{max-width:520px}
+</style>
+</head>
+<body>
+
+<section id="home" class="screen active">
+<div class="card">
+<div class="forest-title">🌳🦋🏔️🐿️</div>
+<h1>راز چشمه‌ی ریاضی</h1>
+<div class="subtitle">🎒 بازی ماجراجویی آموزشی پایه ابتدایی</div>
+<div style="margin:12px auto;max-width:650px;background:#fff3bf;border:3px dashed #e9c46a;border-radius:18px;padding:12px">
+<b>📘 نام درس: ریاضی</b><br>
+<b>📚 مبحث آموزشی: جمع و تفریق و ضرب و تقسیم و تقارن</b>
+</div>
+<p>یک سفر پرهیجان در جنگل، رودخانه، دریاچه و کوهستان؛ هر مانع یک معمای ریاضی دارد!</p>
+<input id="studentName" maxlength="24" placeholder="اسم دانش‌آموز را وارد کن">
+<br>
+<button class="btn green" onclick="startNew()">🚀 شروع ماجراجویی</button>
+<button id="continueBtn" class="btn blue hidden" onclick="continueGame()">▶️ ادامه بازی قبلی</button>
+<button id="resetBtn" class="btn red hidden" onclick="resetSave()">🗑️ پاک کردن ذخیره</button>
+<div class="teacher"><b>طراح بازی: زهرا میربلوچزائی</b><br>مدرسه شهید مدنی</div>
+<p>🎵 موسیقی ملایم بازی با شروع ماجراجویی فعال می‌شود.</p>
+</div>
+</section>
+
+<section id="intro" class="screen">
+<div class="card">
+<h2>📚 کوله‌پشتی ریاضی</h2>
+<p id="welcome"></p>
+<div class="lesson">
+<div>➕ <b>جمع</b><br>عددها را کنار هم می‌گذاریم.</div>
+<div>➖ <b>تفریق</b><br>مقداری را از مقدار دیگر کم می‌کنیم.</div>
+<div>✖️ <b>ضرب</b><br>جمع‌های مساوی و تکراری است.</div>
+<div>➗ <b>تقسیم</b><br>یک مقدار را مساوی بین چند گروه پخش می‌کنیم.</div>
+<div>🔷 <b>تقارن</b><br>دو طرف محور تقارن مانند تصویر آینه‌ای هستند.</div>
+</div>
+<button class="btn green" onclick="beginJourney()">🌲 شروع سفر</button>
+</div>
+</section>
+
+<section id="game" class="screen">
+<div class="gamecard">
+<div class="hud">
+<div class="pill">👤 <span id="nameHud"></span></div>
+<div class="pill">❤️ جان: <span id="lives">7</span>/7</div>
+<div class="pill">🪙 سکه: <span id="coins">0</span></div>
+<div class="pill">✅ درست: <span id="correct">0</span></div>
+<div class="pill">❌ غلط: <span id="wrong">0</span></div>
+<div class="pill">🗺️ مرحله: <span id="levelHud">1</span>/15</div>
+</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="scene">
+<div class="clouds">☁️ ☁️ ☁️</div><div class="mountains" id="mountains">🌲 🌳 🌲 🏔️ 🌲 🌳</div>
+<div class="path"></div><div class="stage-title" id="stageTitle"></div>
+<div class="obstacle" id="obstacle"></div><div class="character" id="character">👧</div>
+</div>
+<div class="question">
+<div id="encourage" class="subtitle"></div><div id="qtext" class="q"></div>
+<div id="answers" class="answers"></div><div id="feedback" class="feedback"></div>
+<button id="nextBtn" class="btn green hidden" onclick="nextQuestion()">🚶 ادامه مسیر ➜</button>
+</div>
+<button class="btn blue" onclick="saveAndHome()">💾 ذخیره و خروج</button>
+</div>
+</section>
+
+<section id="end" class="screen">
+<div class="card">
+<div class="forest-title">💧🏞️🌈✨</div><h1>چشمه‌ی دانایی!</h1>
+<h2 id="finalName"></h2><p>تبریک! تو همه‌ی موانع را با کمک ریاضی پشت سر گذاشتی. 🏆</p>
+<p>🪙 سکه‌های تو: <b id="finalCoins"></b></p>
+<div id="performanceBox" style="background:#e9f5db;border-radius:18px;padding:15px;margin:12px auto;max-width:650px">
+<b>📊 عملکرد بازیکن</b><br>
+تعداد پاسخ درست: <b id="finalCorrect"></b> |
+تعداد پاسخ غلط: <b id="finalWrong"></b><br>
+درصد موفقیت: <b id="finalPercent"></b>٪
+</div>
+<div class="lesson"><div>➕ جمع: کنار هم گذاشتن مقدارها.</div><div>➖ تفریق: کم کردن.</div><div>✖️ ضرب: جمع تکراری.</div><div>➗ تقسیم: پخش مساوی.</div><div>🔷 تقارن: دو نیمه‌ی آینه‌ای.</div></div>
+<p>🌟 تو یک ماجراجوی ریاضی واقعی هستی!</p>
+<button class="btn green" onclick="startNew()">🔁 ماجراجویی دوباره</button>
+</div>
+</section>
+
+<div id="lifeModal" class="modal hidden"><div class="card">
+<h2>😴 قهرمان خسته شد!</h2><p>هر ۷ جان تمام شد. بعد از ۵ دقیقه جان‌ها کامل می‌شوند.</p><p id="timer"></p>
+<button class="btn blue" onclick="closeLifeModal()">باشه</button>
+</div></div>
+<div id="balloons" class="balloons"></div>
+
+<script>
+const levels=[
+["جنگل سبز","🪨","سنگ بزرگ سر راه","جمع","اگر 8 پرنده و 7 پرنده دیگر ببینیم، چند پرنده می‌شود؟",["14","15","16","17"],1],
+["درخت افتاده","🌳","برای پریدن از روی درخت افتاده","تفریق","12 سیب داشتی و 5 سیب به دوستت دادی. چند سیب ماند؟",["6","7","8","9"],1],
+["رودخانه","🌊","برای ساختن پل روی رودخانه","جمع","یک پل 6 تخته دارد و 9 تخته دیگر پیدا کردی. چند تخته داری؟",["14","15","16","17"],1],
+["پل چوبی","🪵","برای محکم کردن پل","ضرب","3 ردیف داریم و در هر ردیف 4 تخته است. چند تخته؟",["7","10","12","14"],2],
+["دریاچه","🛶","برای جمع‌آوری وسایل قایق","تقسیم","16 بطری آب را بین 4 کوله مساوی تقسیم کنیم. هر کوله چند بطری؟",["3","4","5","6"],1],
+["قایق","⛵","قایق آماده است؛ یک معما تا عبور از دریاچه","ضرب","5 ماهیگیر هر کدام 3 قلاب دارند. چند قلاب؟",["8","12","15","18"],2],
+["ساحل دریاچه","🦀","برای پیدا کردن مسیر کوهستان","تفریق","25 قدم راه رفتی و 9 قدم مانده بود. چند قدم را پشت سر گذاشتی؟",["14","15","16","17"],2],
+["دره‌ی سنگی","🪨","برای عبور از سنگ‌های بزرگ","جمع","17 + 6 چند می‌شود؟",["22","23","24","25"],1],
+["پل طنابی","🌉","برای عبور از پل طنابی","تقسیم","18 مهره را بین 3 نفر مساوی تقسیم کنیم. سهم هر نفر؟",["5","6","7","8"],1],
+["غار آینه‌ها","🪞","برای پیدا کردن در خروجی غار","تقارن","کدام شکل معمولاً تقارن آینه‌ای دارد؟",["پروانه","سنگ نامنظم","ابر نامنظم","خط کج"],0],
+["شیب کوه","🧗","برای بالا رفتن از شیب","ضرب","4 گروه 6 تایی گل کوهی داریم. چند گل؟",["20","22","24","26"],2],
+["سنگ‌ریزه‌های راه","🪨","برای رد شدن از مسیر سنگی","تفریق","30 سنگ بود؛ 13 سنگ کنار رفت. چند سنگ ماند؟",["16","17","18","19"],1],
+["آبشار","💦","برای پیدا کردن مسیر پشت آبشار","جمع","12 قطره + 15 قطره چند قطره می‌شود؟",["25","26","27","28"],2],
+["باغ کوهستان","🌸","برای باز کردن دروازه‌ی باغ","تقارن","اگر یک شکل را از روی محور تقارن تا کنیم، دو نیمه چگونه‌اند؟",["هم‌اندازه و آینه‌ای","یکی بزرگ‌تر","کاملاً متفاوت","هیچ‌کدام"],0],
+["چشمه دانایی","💧","آخرین دروازه‌ی چشمه","ترکیبی","اگر 8×3 را حساب کنیم و سپس 24÷6 را به آن اضافه کنیم، جواب چیست؟",["26","28","30","32"],1]
+];
+
+const girls=new Set("زهرا سارا مریم نازنین نگار نرگس یاسمن یاسمین آیدا آتنا آوا ترانه تینا رویا ریحانه الهام الناز نیایش باران بهار بهناز شبنم مهسا محدثه فاطمه سمانه سمیه مونا ندا هانیه حدیث هستی هلیا دریا پریسا پرنیا پرستو سحر سوگند ساغر ستایش کیانا کیمیا یگانه یسنا مبینا ملیکا مهتاب نیکا نیکی نسترن نازگل شیما شقایق غزل غزاله مائده".split(" "));
+const boys=new Set("علی محمد امیر رضا مهدی حسین حسن احسان آرش آرین آریا سامان سینا سروش سعید پویا پارسا پوریا امیرعلی امیرحسین ابوالفضل ابراهیم یوسف نوید نیما اشکان شایان کیان کیارش بردیا بنیامین بهنام بهزاد بهروز میلاد مهراد متین رادین رامین رامتین دانیال داریوش فرهاد فرزاد فرشید شاهین شهاب شاهرخ حمید حامد هادی هومن امید ایلیا عرشیا عرفان یاسین یونس مجتبی مصطفی مجید مسعود".split(" "));
+
+let state={name:"",gender:"girl",level:0,coins:0,lives:7,lastLifeLost:0,correct:0,wrong:0};
+let audioCtx=null, musicTimer=null;
+const $=id=>document.getElementById(id);
+
+function genderFor(name){
+ const n=name.trim().replace(/\s+/g," ");
+ if(girls.has(n)) return "girl"; if(boys.has(n)) return "boy";
+ // common Persian name endings; unknown names use a neutral child avatar.
+ if(/ا$/.test(n)&&!["رضا","مصطفی","مجتبی","مرتضی"].includes(n)) return "girl";
+ return "boy";
+}
+function load(){
+ try{let s=JSON.parse(localStorage.getItem("mathAdventureSave"));if(s){state={...state,...s,correct:Number(s.correct||0),wrong:Number(s.wrong||0)};$("studentName").value=state.name||"";$("continueBtn").classList.remove("hidden");$("resetBtn").classList.remove("hidden")}}catch(e){}
+}
+function save(){localStorage.setItem("mathAdventureSave",JSON.stringify(state))}
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$(id).classList.add("active")}
+function startNew(){
+ let n=$("studentName").value.trim(); if(!n){alert("لطفاً اول اسم دانش‌آموز را وارد کن 🌟");return}
+ state={name:n,gender:genderFor(n),level:0,coins:0,lives:7,lastLifeLost:0,correct:0,wrong:0};save();
+ startMusic();$("welcome").textContent=`آفرین ${n}! کوله‌پشتی را بردار و آماده‌ی سفر شو.`;
+ show("intro");
+}
+function continueGame(){
+ if(!state.name)return; startMusic();
+ if(state.lives<7&&state.lastLifeLost&&(Date.now()-state.lastLifeLost)>=300000){state.lives=7;state.lastLifeLost=0;save()}
+ $("welcome").textContent=`خوش برگشتی ${state.name}! از مرحله ${state.level+1} ادامه می‌دهیم.`;
+ show("intro");
+}
+function beginJourney(){startMusic();show("game");render()}
+function render(){
+ if(state.level>=levels.length){finish();return}
+ const L=levels[state.level], avatar=state.gender==="girl"?"👧":"👦";
+ $("nameHud").textContent=state.name;$("lives").textContent=state.lives;$("coins").textContent=state.coins;
+ $("correct").textContent=state.correct;$("wrong").textContent=state.wrong;$("levelHud").textContent=state.level+1;
+ $("bar").style.width=(state.level/levels.length*100)+"%";$("character").textContent=avatar;
+ $("stageTitle").textContent=`${L[0]} — ${L[2]}`;$("obstacle").textContent=L[1];
+ $("encourage").textContent=`آفرین ${state.name}! برای عبور از مانع، مسئله‌ی ${L[3]} را حل کن.`;
+ $("qtext").textContent=L[4];$("feedback").textContent="";$("nextBtn").classList.add("hidden");
+ $("answers").innerHTML=L[5].map((x,i)=>`<button class="ans" onclick="answer(${i})">${x}</button>`).join("");
+}
+function answer(i){
+ const L=levels[state.level];
+ if(!$("nextBtn").classList.contains("hidden"))return;
+ if(i===L[6]){
+   state.correct++; state.coins+=10; playAnswerSound(true);$("feedback").textContent=`🎉 درست گفتی ${state.name}! مانع را رد کردی و ۱۰ سکه گرفتی.`;
+   document.querySelectorAll(".ans").forEach(b=>b.disabled=true);$("nextBtn").classList.remove("hidden");save();
+   popBalloons();
+ }else{
+   state.wrong++; playAnswerSound(false);
+   state.lives--; $("lives").textContent=state.lives;
+   $("feedback").textContent=`💡 دوباره فکر کن ${state.name}! یک جان کم شد.`;
+   if(state.lives<=0){state.lives=0;state.lastLifeLost=Date.now();save();setTimeout(showLifeModal,350)}
+ }
+}
+function nextQuestion(){state.level++;save();render()}
+function popBalloons(){
+ const box=$("balloons");box.innerHTML="";
+ const symbols=["🎈","🎈","🎈","🎈","🎈","🎈","🎈"];
+ for(let i=0;i<7;i++){
+   let b=document.createElement("div");b.className="balloon";b.textContent="🎈";
+   b.style.left=(5+Math.random()*88)+"%";b.style.animationDelay=(Math.random()*.5)+"s";
+   b.style.background=["#ff6b6b","#ffd166","#4dabf7","#74c69d","#c77dff","#f78fb3"][i%6];
+   b.onclick=()=>{b.classList.add("pop");spark(b);setTimeout(()=>b.remove(),180)};
+   box.appendChild(b);
+ }
+ setTimeout(()=>box.innerHTML="",5500);
+}
+function spark(b){let s=document.createElement("span");s.className="spark";s.textContent="✨";s.style.left=b.style.left;s.style.top="50%";$("balloons").appendChild(s);setTimeout(()=>s.remove(),1000)}
+function showLifeModal(){$("lifeModal").classList.remove("hidden");updateTimer()}
+function closeLifeModal(){$("lifeModal").classList.add("hidden");if(state.lives<=0){state.lives=7;state.lastLifeLost=0;save();render()}}
+function updateTimer(){
+ if($("lifeModal").classList.contains("hidden"))return;
+ let remain=Math.max(0,300-(Date.now()-state.lastLifeLost)/1000);
+ if(remain<=0){state.lives=7;state.lastLifeLost=0;save();$("lifeModal").classList.add("hidden");render();return}
+ $("timer").textContent=`زمان باقی‌مانده تا پر شدن جان‌ها: ${Math.floor(remain/60)}:${String(Math.floor(remain%60)).padStart(2,"0")}`;
+ setTimeout(updateTimer,1000)
+}
+function saveAndHome(){save();show("home");load()}
+function finish(){state.level=levels.length;save();$("finalName").textContent=`قهرمان عزیز، ${state.name}!`;$("finalCoins").textContent=state.coins;
+ $("finalCorrect").textContent=state.correct;$("finalWrong").textContent=state.wrong;
+ let total=state.correct+state.wrong; $("finalPercent").textContent=total?Math.round(state.correct/total*100):0; show("end")}
+function resetSave(){if(confirm("ذخیره‌ی بازی پاک شود؟")){localStorage.removeItem("mathAdventureSave");location.reload()}}
+
+
+function playAnswerSound(correct){
+ try{
+   const C=window.AudioContext||window.webkitAudioContext;
+   if(!C)return;
+   if(!audioCtx) audioCtx=new C();
+   if(audioCtx.state==="suspended") audioCtx.resume();
+   const now=audioCtx.currentTime;
+   const notes=correct?[523.25,659.25,783.99]:[220,174.61];
+   notes.forEach((freq,i)=>{
+     const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+     o.type=correct?"triangle":"sine"; o.frequency.value=freq;
+     g.gain.setValueAtTime(.0001,now+i*.12);
+     g.gain.exponentialRampToValueAtTime(.09,now+i*.12+.02);
+     g.gain.exponentialRampToValueAtTime(.0001,now+i*.12+.20);
+     o.connect(g);g.connect(audioCtx.destination);
+     o.start(now+i*.12);o.stop(now+i*.12+.23);
+   });
+ }catch(e){}
+}
+function startMusic(){
+ if(musicTimer||!window.AudioContext)return;
+ audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+ let notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23], idx=0;
+ const play=()=>{if(!audioCtx)return;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=notes[idx++%notes.length];g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.035,audioCtx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+1.15);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+1.2)};
+ play();musicTimer=setInterval(play,1250);
+}
+load();
+</script>
+</body>
+</html>
